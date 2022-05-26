@@ -101,26 +101,37 @@ async function run() {
         })
 
         //------------------------------------//
-        // PRODUCT GET , POST , DELETE ENDPOINT
+        // Review GET , POST , DELETE ENDPOINT
         //------------------------------------//
-        ////--------------------------------------------------------------
-        // PRODUCT ITEM LOAD ENDPOINT
-        app.get('/products', async (req, res) => {
+
+        // Review ITEM LOAD ENDPOINT
+        app.get('/reviews', async (req, res) => {
             const query = {};
-            const cursor = productsCollection.find(query);
-            // .project({ name: 1 });
+            const cursor = reviewsCollection.find(query);
             const items = await cursor.toArray();
             res.send(items)
         });
 
-        // test detail
+        //------------------------------------//
+        // PRODUCT GET , POST , DELETE ENDPOINT
+        //------------------------------------//
+
+        // ALL PRODUCT ITEM LOAD ENDPOINT
+        app.get('/products', async (req, res) => {
+            const query = {};
+            const cursor = productsCollection.find(query);
+            const items = await cursor.toArray();
+            res.send(items)
+        });
+
+        // PRODUCT DETAILS LOAD ON PURCHASE PAGE
         app.get('/products/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const ProductInfo = await productsCollection.findOne(query);
             res.send(ProductInfo);
         })
-        ////-----------------------------------------------------------------------------
+
         // POST PRODUCT ON MANAGEPRODUCT PAGE BY ADMIN
         app.post('/products', verifyJWT, async (req, res) => {
             const products = req.body;
