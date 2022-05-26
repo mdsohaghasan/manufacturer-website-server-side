@@ -112,6 +112,29 @@ async function run() {
             res.send(items)
         });
 
+        // LOAD Review  ON MY Review PAGE 
+        app.get('/reviews', verifyJWT, async (req, res) => {
+            const customerEmail = req.query.customerEmail;
+            const decodedEmail = req.decoded.email;
+            if (customerEmail === decodedEmail) {
+                const query = { customerEmail: customerEmail };
+                const reviews = await reviewsCollection.find(query).toArray();
+                return res.send(reviews);
+            }
+            else {
+                return res.status(403).send({ message: 'forbidden access' });
+            }
+        });
+
+        // POST Review ON ADD Review PAGE BY USER
+        app.post('/reviews', verifyJWT, async (req, res) => {
+            const review = req.body;
+            const result = await reviewsCollection.insertOne(review);
+            res.send(result);
+        });
+
+
+
         //------------------------------------//
         // PRODUCT GET , POST , DELETE ENDPOINT
         //------------------------------------//
