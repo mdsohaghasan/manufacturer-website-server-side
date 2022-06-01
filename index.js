@@ -42,6 +42,7 @@ async function run() {
         const reviewsCollection = client.db('phoneplus').collection('reviews');
         const PurchaseInfoCollection = client.db('phoneplus').collection('PurchaseInfo');
         const paymentCollection = client.db('phoneplus').collection('payments');
+        const typeCollection = client.db('phoneplus').collection('type');
         console.log('Database Connect Hoise')
 
         // working -----------------------
@@ -64,6 +65,10 @@ async function run() {
         // LOAD USER ON MANAGEUSER PAGE 
         app.get('/manageusers', verifyJWT, async (req, res) => {
             const users = await usersCollection.find().toArray();
+            res.send(users);
+        });
+        app.get('/type', verifyJWT, async (req, res) => {
+            const users = await typeCollection.find().toArray();
             res.send(users);
         });
 
