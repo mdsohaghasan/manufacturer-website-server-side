@@ -63,14 +63,14 @@ async function run() {
         //--------------//
 
         // LOAD USER ON MANAGEUSER PAGE 
-        app.get('/manageusers', verifyJWT, verifyAdmin, async (req, res) => {
+        app.get('/manageusers', verifyJWT, async (req, res) => {
             const users = await usersCollection.find().toArray();
             res.send(users);
         });
 
 
         // UPDATE USER INFO MY ACCOUNT PAGE OR SIGNUP PAGE 
-        app.put('/users/:email', async verifyAdmin, (req, res) => {
+        app.put('/users/:email', async (req, res) => {
             const email = req.params.email;
             const user = req.body;
             const filter = { email: email };
@@ -150,7 +150,7 @@ async function run() {
         });
 
         // PRODUCT DETAILS LOAD ON PURCHASE PAGE
-        app.get('/products/:id', verifyAdmin, async (req, res) => {
+        app.get('/products/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const ProductInfo = await productsCollection.findOne(query);
